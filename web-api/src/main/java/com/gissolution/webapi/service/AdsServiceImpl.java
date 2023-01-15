@@ -19,10 +19,8 @@ public class AdsServiceImpl {
     @RequestMapping(value = "/api/ads", produces = "application/json", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<GenericResponse<List<Ads>>> getAds() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        GenericResponse<List<Ads>> genericResponse = objectMapper.readValue(Thread.currentThread().getContextClassLoader().getResourceAsStream("ads.json"), new GenericResponse<List<Ads>>().getClass());
-        genericResponse.setError(false);
-        genericResponse.setErrorMessage("No Error");
-        genericResponse.setHasMorePage(false);
-        return new ResponseEntity<GenericResponse<List<Ads>>>(genericResponse, HttpStatus.ACCEPTED);
+        GenericResponse<List<Ads>> value = objectMapper.readValue(Thread.currentThread().getContextClassLoader().getResourceAsStream("ads.json"), new GenericResponse<List<Ads>>().getClass());
+        return new ResponseEntity<GenericResponse<List<Ads>>>(value, HttpStatus.ACCEPTED);
     }
+
 }
