@@ -1,13 +1,13 @@
 package com.gissolution.webapi.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gissolution.webapi.input.BrandsAddRequest;
 import com.gissolution.webapi.output.Brands;
 import com.gissolution.webapi.output.generic.GenericResponse;
 import com.gissolution.webdata.dao.BrandDao;
 import com.gissolution.webdata.dao.ImagesDao;
-import com.gissolution.webdata.dao.UserDao;
 import com.gissolution.webdata.entity.BrandEntity;
-import com.gissolution.webdata.entity.UserEntity;
+import com.gissolution.webdata.entity.ImageEntity;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,12 +30,8 @@ public class BrandsServiceImpl {
 
     @Autowired
     BrandDao brandDao;
-
     @Autowired
-    ImagesDao imagesDao;
-
-    @Autowired
-    UserDao userDao;
+    private ImagesDao imagesDao;
 
     @RequestMapping(value = "/api/brands", produces = "application/json", method = RequestMethod.GET)
     @Transactional
@@ -83,5 +79,37 @@ public class BrandsServiceImpl {
         return  brands;
     }
 
+
+    @RequestMapping(value = "api/brands", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    public @ResponseBody ResponseEntity<GenericResponse<?>> addBrands(@RequestBody BrandsAddRequest request) {
+        GenericResponse<String> genericResponseError = new GenericResponse<>();
+        genericResponseError.setResponse("Some error occured. Please check your input.");
+        try {
+            ImageEntity imageEntity = new ImageEntity();
+            imageEntity.setImageUrl(request.getBrandIcon());
+            imageEntity.setStorageType("storageType1");
+            imageEntity.setOriginalNameName("OriginalName1");
+            imageEntity.setFileType("Filetype1");
+            imageEntity = imagesDao.save(imageEntity);
+
+            BrandEntity brandEntity = new BrandEntity();
+            brandEntity.setBrandName(request.getBrandName());
+            brandEntity.setImageEntity(imageEntity);
+            brandEntity.setTimeStamp(System.currentTimeMillis());
+            brandEntity = brandDao.save(brandEntity);
+
+            genericResponseError.setResponse("Brand Posted Successfully");
+            genericResponseError.setErrorMessage("null");
+            genericResponseError.setError(false);
+            return new ResponseEntity<>(new GenericResponse<>(getBrandResponse(brandEntity)), HttpStatus.CREATED);
+        }catch (IllegalArgumentException e){
+            String error = e.getMessage();
+            genericResponseError.setErrorMessage(error);
+            genericResponseError.setError(true);
+            return new ResponseEntity<>(genericResponseError, HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(genericResponseError, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }

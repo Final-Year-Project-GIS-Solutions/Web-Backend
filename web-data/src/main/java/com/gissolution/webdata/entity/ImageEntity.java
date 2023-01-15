@@ -30,17 +30,6 @@ public class ImageEntity implements Serializable{
     @Column(name = "Original_file_type")
     String originalFileType;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    UserEntity userId;
-
-    public UserEntity getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UserEntity userId) {
-        this.userId = userId;
-    }
 
     public UUID getId() {
         return id;
