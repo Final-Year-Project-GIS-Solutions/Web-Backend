@@ -1,0 +1,29 @@
+{
+  "errorMessage": "String",
+  "errorStatus": 200,
+  "hasMorePage": false,
+  "response":
+    {
+      "cartId": 1,
+      "cartItems": [
+        {
+          "image": "String",
+          "title": "String",
+          "Quantity": "String",
+          "Subtotal": "String",
+          "price": "String",
+          "productId": "String",
+          "variantId": "String",
+          "categoryId": "String",
+          "brandId": "String"
+        }
+      ],
+
+      "finalTotal": "String",
+      "finalSubTotal": "String",
+      "tax": "String",
+      "itemsInCart": "String",
+      "discountPercentage": "String",
+      "addressId": "String"
+    }
+}

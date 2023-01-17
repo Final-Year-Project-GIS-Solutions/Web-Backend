@@ -1,0 +1,40 @@
+{
+  "errorStatus": 200,
+  "errorMessage": "String",
+  "response": [
+    {
+      "image": "String",
+      "id": 1,
+      "title": "String",
+      "price": "String",
+      "ratings": "String",
+      "brandImages": [
+        {
+          "image": "String",
+          "brandName": "String"
+        },
+        {
+          "image": "String",
+          "brandName": "String"
+        }
+      ]
+    },
+    {
+      "brandImages": [
+        {
+          "image": "String",
+          "brandName": "String"
+        },
+        {
+          "image": "String",
+          "brandName": "String"
+        }
+      ],
+      "discountPercentage": "String",
+      "id": 2,
+      "image": "String",
+      "title": "String"
+    }
+  ],
+  "hasMorePage": false
+}
