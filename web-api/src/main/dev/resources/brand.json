@@ -1,0 +1,14 @@
+{
+  "errorStatus": 200,
+  "errorMessage": "String",
+  "hasMorePages": true,
+  "response": [
+    {
+      "brandId": "00f241e9-d03f-4009-b0ae-f6852206ea82",
+      "brandName": "brandName1",
+      "brandIcon": "https://ghuikjn",
+      "timeStamp": 1673807793883,
+      "userId": null
+    }
+  ]
+}

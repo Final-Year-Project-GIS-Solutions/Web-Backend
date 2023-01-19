@@ -1,0 +1,12 @@
+{
+  "errorStatus": 200,
+  "errorMessage": "String",
+  "hasMorePages": true,
+  "response": [
+    {
+      "categoriesId": "uuid",
+      "type": "String // interior, exterior, putty",
+      "image": "String"
+    }
+  ]
+}

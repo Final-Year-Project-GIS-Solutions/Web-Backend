@@ -1,0 +1,51 @@
+{
+  "errorStatus": 200,
+  "errorMessage": "String",
+  "hasMorePages": true,
+  "response": [
+    {
+      "productId": "uuid",
+      "name": "String // Apex Floor Guard, ReadyMix Primer Putty",
+      "description": "String",
+      "timestamp": 1673807793883,
+      "benefits": [
+        {
+          "title": "String",
+          "description": "String",
+          "icon": "String"
+        },
+        {
+          "title": "String",
+          "description": "String",
+          "icon": "String"
+        }
+      ],
+      "brandId": "uuid // asian, berger, nerolac, nippon",
+      "categoryId": "uuid // interior, exterior, Metal Painting",
+      "type": "String // emulsion, putty, tile grout, ",
+      "dryingTime": "String in minutes // 30, 20",
+      "warranty": "String",
+      "protectorType": "String // Teflon® Surface Protector // tough and durable",
+      "formula": "String // Enhanced Antimicrobial formula",
+      "resistanceType": "String // scrubResistance, abrasionResistance",
+      "quickDry": true,
+      "remarks": "String // anti pollution",
+      "reCoatingPeriod": "String in hrs // 8-10, 4-6",
+      "finish": "String // High-gloss, semi-gloss, satin, eggshell, matte paint, textured",
+      "durability": "String in years// 3, 2, NA ",
+      "washable": "String // Excellent Washable, Washable, Weather Proof, NA",
+      "antiFungal": true,
+      "userId": "uuid",
+      "warehouseId": "uuid",
+      "variants": [
+        {
+          "availability": "String in Ltr/KG // 1, 4, 20",
+          "coverage": "String in SqFt/Ltr or KG // 120-130, NA, 100-120",
+          "price": "String INR // 321, 1237 ",
+          "color": "String name // red, blue",
+          "colorHex": "hex code for colors"
+        }
+      ]
+    }
+  ]
+}

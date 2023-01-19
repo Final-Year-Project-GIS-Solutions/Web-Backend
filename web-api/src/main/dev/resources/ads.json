@@ -3,12 +3,15 @@
   "errorMessage": "String",
   "response": [
     {
-      "image": "String",
+      "image": [
+        "String"
+      ],
       "id": 1,
       "title": "String",
       "discountPercentage": "String",
       "brandImages": [
         {
+          "id": "String",
           "image": "String",
           "brandName": "String"
         },

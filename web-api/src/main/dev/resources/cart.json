@@ -5,6 +5,7 @@
   "response":
     {
       "cartId": 1,
+      "userId": "uuid",
       "cartItems": [
         {
           "image": "String",
