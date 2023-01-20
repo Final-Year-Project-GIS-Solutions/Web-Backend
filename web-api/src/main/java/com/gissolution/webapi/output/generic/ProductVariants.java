@@ -3,8 +3,12 @@ package com.gissolution.webapi.output.generic;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class ProductVariants implements Serializable {
+
+    @JsonProperty("productVariantId")
+    UUID productVariantId;
 
     @JsonProperty("availability")
     String availability;
@@ -20,6 +24,14 @@ public class ProductVariants implements Serializable {
 
     @JsonProperty("color_hex")
     String colorHex;
+
+    public UUID getProductVariantId() {
+        return productVariantId;
+    }
+
+    public void setProductVariantId(UUID productVariantId) {
+        this.productVariantId = productVariantId;
+    }
 
     public String getAvailability() {
         return availability;

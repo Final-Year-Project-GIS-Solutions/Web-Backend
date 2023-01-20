@@ -2,6 +2,7 @@ package com.gissolution.webapi.output;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gissolution.webapi.output.generic.ProductBenefits;
+import com.gissolution.webapi.output.generic.ProductVariants;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -74,6 +75,9 @@ public class Products implements Serializable {
 
     @JsonProperty("warehouse_id")
     UUID warehouseId;
+
+    @JsonProperty("product_variants")
+    Set<ProductVariants> productVariantsSet;
 
     public UUID getProductId() {
         return productId;
@@ -249,5 +253,13 @@ public class Products implements Serializable {
 
     public void setWarehouseId(UUID warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public Set<ProductVariants> getProductVariantsSet() {
+        return productVariantsSet;
+    }
+
+    public void setProductVariantsSet(Set<ProductVariants> productVariantsSet) {
+        this.productVariantsSet = productVariantsSet;
     }
 }
