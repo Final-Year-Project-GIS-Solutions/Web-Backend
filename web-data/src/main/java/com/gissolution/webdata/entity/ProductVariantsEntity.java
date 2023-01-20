@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product_variant_entity")
+@Table(name = "product_variants")
 public class ProductVariantsEntity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid2", strategy = GenerationType.AUTO)
     @Column(name = "productVariantsId", columnDefinition = "uuid")
-    UUID productVariantsId;
+    UUID id;
 
     @Column(name = "availability")
     String availability;
@@ -33,11 +33,11 @@ public class ProductVariantsEntity implements Serializable {
     ProductEntity productEntity;
 
     public UUID getProductVariantsId() {
-        return productVariantsId;
+        return id;
     }
 
     public void setProductVariantsId(UUID productVariantsId) {
-        this.productVariantsId = productVariantsId;
+        this.id = productVariantsId;
     }
 
     public String getAvailability() {

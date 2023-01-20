@@ -11,7 +11,7 @@ public class CategoriesEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid2", strategy = GenerationType.AUTO)
     @Column(name = "id", columnDefinition = "uuid")
-    UUID categoriesId;
+    UUID id;
 
     @Column(name = "type")
     String type;
@@ -20,11 +20,11 @@ public class CategoriesEntity implements Serializable {
     String image;
 
     public UUID getCategoriesId() {
-        return categoriesId;
+        return id;
     }
 
     public void setCategoriesId(UUID categoriesId) {
-        this.categoriesId = categoriesId;
+        this.id = categoriesId;
     }
 
     public String getType() {

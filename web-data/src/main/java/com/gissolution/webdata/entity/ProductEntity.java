@@ -6,13 +6,13 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product_entity")
+@Table(name = "products")
 public class ProductEntity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid2", strategy = GenerationType.AUTO)
     @Column(name = "productId", columnDefinition = "uuid")
-    UUID productId;
+    UUID id;
 
 
     @Column(name = "name")
@@ -24,8 +24,7 @@ public class ProductEntity implements Serializable {
     @Column(name = "time_stamp")
     Long timeStamp;
 
-    @OneToMany
-    @JoinColumn(name = "product_benefits")
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
     Set<ProductBenefitsEntity> productBenefitsEntitySet;
 
     @ManyToOne
@@ -38,6 +37,9 @@ public class ProductEntity implements Serializable {
 
     @Column(name = "type")
     String type;
+
+    @Column(name = "drying_time")
+    String dryingTime;
 
     @Column(name = "warranty")
     String warranty;
@@ -52,7 +54,7 @@ public class ProductEntity implements Serializable {
     String resistanceType;
 
     @Column(name = "quick_dry")
-    String quickDry;
+    Boolean quickDry;
 
     @Column(name = "remarks")
     String remarks;
@@ -84,11 +86,11 @@ public class ProductEntity implements Serializable {
     Set<ProductVariantsEntity> productVariantsEntitySet;
 
     public UUID getProductId() {
-        return productId;
+        return id;
     }
 
     public void setProductId(UUID productId) {
-        this.productId = productId;
+        this.id = productId;
     }
 
     public String getName() {
@@ -147,6 +149,14 @@ public class ProductEntity implements Serializable {
         this.type = type;
     }
 
+    public String getDryingTime() {
+        return dryingTime;
+    }
+
+    public void setDryingTime(String dryingTime) {
+        this.dryingTime = dryingTime;
+    }
+
     public String getWarranty() {
         return warranty;
     }
@@ -179,11 +189,11 @@ public class ProductEntity implements Serializable {
         this.resistanceType = resistanceType;
     }
 
-    public String getQuickDry() {
+    public Boolean getQuickDry() {
         return quickDry;
     }
 
-    public void setQuickDry(String quickDry) {
+    public void setQuickDry(Boolean quickDry) {
         this.quickDry = quickDry;
     }
 

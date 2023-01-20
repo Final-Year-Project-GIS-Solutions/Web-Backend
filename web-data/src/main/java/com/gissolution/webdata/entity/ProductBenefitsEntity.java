@@ -5,13 +5,13 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "product+benefits_entity")
+@Table(name = "product_benefits")
 public class ProductBenefitsEntity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "uuid2", strategy = GenerationType.AUTO)
     @Column(name = "productBenefitsId", columnDefinition = "uuid")
-    UUID productBenefitsId;
+    UUID id;
 
     @Column(name = "title")
     String title;
@@ -22,12 +22,16 @@ public class ProductBenefitsEntity implements Serializable {
     @Column(name = "icon")
     String icon;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    ProductEntity productEntity;
+
     public UUID getProductBenefitsId() {
-        return productBenefitsId;
+        return id;
     }
 
     public void setProductBenefitsId(UUID productBenefitsId) {
-        this.productBenefitsId = productBenefitsId;
+        this.id = productBenefitsId;
     }
 
     public String getTitle() {
@@ -52,5 +56,13 @@ public class ProductBenefitsEntity implements Serializable {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public ProductEntity getProductEntity() {
+        return productEntity;
+    }
+
+    public void setProductEntity(ProductEntity productEntity) {
+        this.productEntity = productEntity;
     }
 }
