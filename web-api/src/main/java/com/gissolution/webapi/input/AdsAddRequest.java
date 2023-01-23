@@ -13,7 +13,7 @@ public class AdsAddRequest implements Serializable {
     @JsonProperty("title")
     String title;
 
-    @JsonProperty("discount_percentage")
+    @JsonProperty("discountPercentage")
     String discountPercentage;
 
     @JsonProperty("brandImages")

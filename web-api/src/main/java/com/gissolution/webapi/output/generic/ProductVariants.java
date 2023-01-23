@@ -22,7 +22,7 @@ public class ProductVariants implements Serializable {
     @JsonProperty("color")
     String color;
 
-    @JsonProperty("color_hex")
+    @JsonProperty("colorHex")
     String colorHex;
 
     public UUID getProductVariantId() {

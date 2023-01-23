@@ -8,7 +8,7 @@ public class WareHouseAddRequest implements Serializable {
     @JsonProperty("address")
     String addressId;
 
-    @JsonProperty("warehouse_title")
+    @JsonProperty("warehouseTitle")
     String warehouseTitle;
 
     public String getWarehouseTitle() {

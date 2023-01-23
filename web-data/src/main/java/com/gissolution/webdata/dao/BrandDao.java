@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface BrandDao extends JpaRepository<BrandEntity, UUID> {
-    Page<BrandEntity> getBrandByBrandId(UUID brandId, Pageable pageable);
+    BrandEntity getBrandByBrandId(UUID brandId);
 
     @org.springframework.data.jpa.repository.Query(value = "SELECT brd from BrandEntity brd")
     Page<BrandEntity> getBrand(Pageable pageable);

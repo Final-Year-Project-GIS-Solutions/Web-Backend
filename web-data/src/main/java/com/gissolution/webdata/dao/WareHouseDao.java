@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface WareHouseDao extends JpaRepository<WarehouseEntity, UUID> {
-    Page<WarehouseEntity> getWareHouseEntityById(UUID warehouseId, Pageable pageable);
+    WarehouseEntity getWareHouseEntityById(UUID warehouseId);
 
     @org.springframework.data.jpa.repository.Query(value = "SELECT war from WarehouseEntity war where war.userId = :userId")
     Page<WarehouseEntity> getWareHouseEntityByUser(@Param("userId") String userId, Pageable pageable);

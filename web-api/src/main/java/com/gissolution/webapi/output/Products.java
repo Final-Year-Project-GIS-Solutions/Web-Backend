@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class Products implements Serializable {
 
-    @JsonProperty("product_id")
+    @JsonProperty("productId")
     UUID productId;
 
     @JsonProperty("name")
@@ -25,37 +25,37 @@ public class Products implements Serializable {
     @JsonProperty("benefits")
     Set<ProductBenefits> benefits;
 
-    @JsonProperty("brand_id")
+    @JsonProperty("brandId")
     String brandId;
 
-    @JsonProperty("category_id")
+    @JsonProperty("categoryId")
     String categoryId;
 
     @JsonProperty("type")
     String type;
 
-    @JsonProperty("drying_time")
+    @JsonProperty("dryingTime")
     String dryingTime;
 
     @JsonProperty("warranty")
     String warranty;
 
-    @JsonProperty("protector_type")
+    @JsonProperty("protectorType")
     String protectorType;
 
     @JsonProperty("formula")
     String formula;
 
-    @JsonProperty("resistance_type")
+    @JsonProperty("resistanceType")
     String resistanceType;
 
-    @JsonProperty("quick_dry")
+    @JsonProperty("quickDry")
     Boolean quickDry;
 
     @JsonProperty("remarks")
     String remarks;
 
-    @JsonProperty("re_coating_period")
+    @JsonProperty("reCoatingPeriod")
     String reCoatingPeriod;
 
     @JsonProperty("finish")
@@ -67,16 +67,16 @@ public class Products implements Serializable {
     @JsonProperty("washable")
     String washable;
 
-    @JsonProperty("anti_fungal")
+    @JsonProperty("antiFungal")
     Boolean antiFungal;
 
-    @JsonProperty("user_id")
+    @JsonProperty("userId")
     String userId;
 
-    @JsonProperty("warehouse_id")
+    @JsonProperty("warehouseId")
     UUID warehouseId;
 
-    @JsonProperty("product_variants")
+    @JsonProperty("productVariants")
     Set<ProductVariants> productVariantsSet;
 
     public UUID getProductId() {

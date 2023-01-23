@@ -8,7 +8,7 @@ public class BrandImages implements Serializable {
     @JsonProperty("image")
     String image;
 
-    @JsonProperty("brand_name")
+    @JsonProperty("brandName")
     String brandName;
 
     public String getImage() {

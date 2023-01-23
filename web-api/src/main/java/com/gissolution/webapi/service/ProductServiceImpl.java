@@ -1,13 +1,12 @@
 package com.gissolution.webapi.service;
 
+import com.gissolution.webapi.input.ProductsAddRequest;
 import com.gissolution.webapi.output.Products;
 import com.gissolution.webapi.output.generic.GenericResponse;
 import com.gissolution.webapi.output.generic.ProductBenefits;
 import com.gissolution.webapi.output.generic.ProductVariants;
 import com.gissolution.webdata.dao.*;
-import com.gissolution.webdata.entity.ProductBenefitsEntity;
-import com.gissolution.webdata.entity.ProductEntity;
-import com.gissolution.webdata.entity.ProductVariantsEntity;
+import com.gissolution.webdata.entity.*;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 public class ProductServiceImpl implements Serializable {
@@ -133,5 +129,73 @@ public class ProductServiceImpl implements Serializable {
         }
         products.setProductVariantsSet(productVariantsSet);
         return products;
+    }
+
+    @RequestMapping(value = "api/products", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @Transactional
+    public @ResponseBody ResponseEntity<GenericResponse<?>> addProducts(@RequestBody ProductsAddRequest request) {
+        GenericResponse<String> genericResponse = new GenericResponse<>();
+        genericResponse.setResponse("Some error occured. Check your input");
+        try {
+            BrandEntity brandEntity = brandDao.getBrandByBrandId(UUID.fromString(request.getBrandId()));
+            CategoriesEntity categoriesEntity = categoriesDao.getCategoryEntityById(UUID.fromString(request.getCategoryId()));
+            WarehouseEntity warehouseEntity = wareHouseDao.getWareHouseEntityById(request.getWarehouseId());
+
+            ProductEntity productEntity = new ProductEntity();
+            productEntity.setName(request.getName());
+            productEntity.setDescription(request.getDescription());
+            productEntity.setTimeStamp(System.currentTimeMillis());
+            productEntity.setBrandEntity(brandEntity);
+            productEntity.setCategoriesEntity(categoriesEntity);
+            productEntity.setType(request.getType());
+            productEntity.setDryingTime(request.getDryingTime());
+            productEntity.setWarranty(request.getWarranty());
+            productEntity.setProtectorType(request.getProtectorType());
+            productEntity.setFormula(request.getFormula());
+            productEntity.setResistanceType(request.getResistanceType());
+            productEntity.setQuickDry(request.getQuickDry());
+            productEntity.setRemarks(request.getRemarks());
+            productEntity.setReCoatingPeriod(request.getReCoatingPeriod());
+            productEntity.setFinish(request.getFinish());
+            productEntity.setDurability(request.getDurability());
+            productEntity.setWashable(request.getWashable());
+            productEntity.setAntiFungal(request.getAntiFungal());
+            productEntity.setWarehouseEntity(warehouseEntity);
+            productEntity = productDao.save(productEntity);
+
+            List<ProductBenefitsEntity> productBenefitsSet = new ArrayList<>();
+            for (ProductBenefits productBenefit: request.getBenefits()) {
+                ProductBenefitsEntity productBenefits = new ProductBenefitsEntity();
+                productBenefits.setTitle(productBenefit.getTitle());
+                productBenefits.setIcon(productBenefit.getTitle());
+                productBenefits.setDescription(productBenefit.getDescription());
+                productBenefits.setProductEntity(productEntity);
+                productBenefits = productBenefitsDao.save(productBenefits);
+                productBenefitsSet.add(productBenefits);
+            }
+
+            productEntity = productDao.getProductEntityById(productEntity.getProductId());
+            productEntity.setProductBenefitsEntitySet(new LinkedHashSet<>(productBenefitsSet));
+
+            List<ProductVariantsEntity> productVariantsEntityList = new ArrayList<>();
+            for (ProductVariants productVariant : request.getProductVariants()) {
+                ProductVariantsEntity productVariantsEntity = new ProductVariantsEntity();
+                productVariantsEntity.setProductEntity(productEntity);
+                productVariantsEntity.setAvailability(productVariant.getAvailability());
+                productVariantsEntity.setColor(productVariant.getColor());
+                productVariantsEntity.setPrice(productVariant.getPrice());
+                productVariantsEntity.setCoverage(productVariant.getCoverage());
+                productVariantsEntity.setColorHex(productVariant.getColorHex());
+                productVariantsEntity = productVariantsDao.save(productVariantsEntity);
+                productVariantsEntityList.add(productVariantsEntity);
+            }
+            productEntity.setProductVariantsEntitySet(new LinkedHashSet<>(productVariantsEntityList));
+
+            return new ResponseEntity<>(new GenericResponse<>(getProductResponse(productEntity)), HttpStatus.CREATED);
+        } catch (Exception e){
+            e.printStackTrace();
+            genericResponse.setError(true);
+            return new ResponseEntity<>(genericResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 }

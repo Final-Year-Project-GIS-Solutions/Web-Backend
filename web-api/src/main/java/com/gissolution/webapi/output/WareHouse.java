@@ -1,13 +1,21 @@
 package com.gissolution.webapi.output;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.UUID;
 
 public class WareHouse implements Serializable {
+    @JsonProperty("warehouseId")
     UUID id;
+
+    @JsonProperty("addressId")
     UUID addressId;
+
+    @JsonProperty("warehouseTitle")
     String wareHouseTitle;
 
+    @JsonProperty("userId")
     String userId;
 
     public String getUserId() {

@@ -5,19 +5,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 
 public class Brands implements Serializable {
-    @JsonProperty("brand_id")
+    @JsonProperty("brandId")
     String brandId;
 
-    @JsonProperty("brand_name")
+    @JsonProperty("brandName")
     String brandName;
 
-    @JsonProperty("brand_icon")
+    @JsonProperty("brandIcon")
     String brandIcon;
 
-    @JsonProperty("time_stamp")
+    @JsonProperty("timeStamp")
     Long timeStamp;
 
-    @JsonProperty("user_id")
+    @JsonProperty("userId")
     String userId;
 
     public Long getTimeStamp() {

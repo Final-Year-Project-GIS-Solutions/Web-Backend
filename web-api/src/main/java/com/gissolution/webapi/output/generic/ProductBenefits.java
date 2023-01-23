@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class ProductBenefits implements Serializable {
 
-    @JsonProperty("product_benefit_id")
+    @JsonProperty("productBenefitId")
     UUID productBenefitId;
 
     @JsonProperty("title")

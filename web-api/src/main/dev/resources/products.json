@@ -5,7 +5,7 @@
   "response": [
     {
       "productId": "uuid",
-      "name": "String // Apex Floor Guard, ReadyMix Primer Putty",
+      ,"name": "String // Apex Floor Guard, ReadyMix Primer Putty",
       "description": "String",
       "timestamp": 1673807793883,
       "benefits": [
