@@ -19,12 +19,15 @@ public class CategoriesEntity implements Serializable {
     @Column(name = "image")
     String image;
 
-    public UUID getCategoriesId() {
+    @Column(name = "timestamp")
+    Long timestamp;
+
+    public UUID getId() {
         return id;
     }
 
-    public void setCategoriesId(UUID categoriesId) {
-        this.id = categoriesId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getType() {
@@ -41,5 +44,13 @@ public class CategoriesEntity implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }

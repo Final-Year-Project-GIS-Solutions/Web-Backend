@@ -14,6 +14,9 @@ public class Categories implements Serializable {
     @JsonProperty("image")
     String image;
 
+    @JsonProperty("timestamp")
+    Long timestamp;
+
     public String getCategoryId() {
         return categoryId;
     }
@@ -36,5 +39,13 @@ public class Categories implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 }

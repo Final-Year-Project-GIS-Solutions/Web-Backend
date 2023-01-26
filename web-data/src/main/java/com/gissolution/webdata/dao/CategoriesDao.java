@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public interface CategoriesDao extends JpaRepository<CategoriesEntity, UUID> {
 
-    CategoriesEntity getCategoryEntityById(UUID categoryId);
+    CategoriesEntity getCategoryEntityById(UUID id);
 
     @org.springframework.data.jpa.repository.Query("SELECT cat FROM CategoriesEntity cat")
     Page<CategoriesEntity> getCategories(Pageable pageable);

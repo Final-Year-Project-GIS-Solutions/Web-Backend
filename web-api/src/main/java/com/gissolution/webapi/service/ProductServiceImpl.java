@@ -100,7 +100,7 @@ public class ProductServiceImpl implements Serializable {
         }
         products.setBenefits(productBenefitsSet);
         products.setBrandId(productEntity.getBrandEntity().getBrandId().toString());
-        products.setCategoryId(productEntity.getCategoriesEntity().getCategoriesId().toString());
+        products.setCategoryId(productEntity.getCategoriesEntity().getId().toString());
         products.setType(productEntity.getType());
         products.setDryingTime(productEntity.getDryingTime());
         products.setWarranty(productEntity.getWarranty());

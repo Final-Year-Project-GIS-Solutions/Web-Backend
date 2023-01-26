@@ -3,6 +3,7 @@ package com.gissolution.webapi.service;
 import com.gissolution.webapi.input.CategorysAddRequest;
 import com.gissolution.webapi.output.Categories;
 import com.gissolution.webapi.output.generic.GenericResponse;
+import com.gissolution.webapi.serviceFireStore.CategoryServiceFireStore;
 import com.gissolution.webdata.dao.CategoriesDao;
 import com.gissolution.webdata.entity.CategoriesEntity;
 import org.apache.http.entity.ContentType;
@@ -22,12 +23,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class CategoryServiceImpl implements Serializable {
 
     @Autowired
     CategoriesDao categoriesDao;
+
+    @Autowired
+    CategoryServiceFireStore categoryServiceFirestore;
 
     @RequestMapping(value = "api/categories", produces = "application/json", method = RequestMethod.GET)
     @Transactional
@@ -40,6 +45,7 @@ public class CategoryServiceImpl implements Serializable {
             if(upto == null) {
                 upto = 15;
             }
+
             Pageable pageable = PageRequest.of(start, upto, Sort.by("id"));
             Page<CategoriesEntity> categoriesEntities = categoriesDao.getCategories(pageable);
             boolean hasMorePages = true;
@@ -50,6 +56,9 @@ public class CategoryServiceImpl implements Serializable {
             for (CategoriesEntity categoriesEntity : categoriesEntities.getContent()) {
                 categoriesResponseList.add(getCategoriesResponse(categoriesEntity));
             }
+
+
+
             genericResponse.setError(false);
             genericResponse.setHasMorePage(hasMorePages);
             genericResponse.setResponse(categoriesResponseList);
@@ -69,9 +78,10 @@ public class CategoryServiceImpl implements Serializable {
 
     private Categories getCategoriesResponse(CategoriesEntity categoriesEntity) {
         Categories categories = new Categories();
-        categories.setCategoryId(categoriesEntity.getCategoriesId().toString());
+        categories.setCategoryId(categoriesEntity.getId().toString());
         categories.setImage(categoriesEntity.getImage());
         categories.setType(categoriesEntity.getType());
+        categories.setTimestamp(categoriesEntity.getTimestamp());
         return categories;
     }
 
@@ -84,7 +94,17 @@ public class CategoryServiceImpl implements Serializable {
             CategoriesEntity categoriesEntity = new CategoriesEntity();
             categoriesEntity.setImage(request.getImage());
             categoriesEntity.setType(request.getType());
+            categoriesEntity.setTimestamp(System.currentTimeMillis());
             categoriesEntity = categoriesDao.save(categoriesEntity);
+
+            Categories categories = new Categories();
+            categories.setTimestamp(categoriesEntity.getTimestamp());
+            categories.setType(categoriesEntity.getType());
+            categories.setImage(categoriesEntity.getImage());
+            categories.setCategoryId(categoriesEntity.getId().toString());
+
+            categoryServiceFirestore.postCategories(categories);
+
             return new ResponseEntity<>(new GenericResponse<>(getCategoriesResponse(categoriesEntity)), HttpStatus.CREATED);
         } catch (Exception e)  {
             genericResponse.setError(true);
@@ -92,4 +112,15 @@ public class CategoryServiceImpl implements Serializable {
             return new ResponseEntity<>(genericResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @RequestMapping(value = "api/firebase/temp", method = RequestMethod.POST)
+    public String saveTemp(@RequestBody Categories categories) throws ExecutionException, InterruptedException {
+        return categoryServiceFirestore.postCategories(categories);
+    }
+
+    @RequestMapping(value = "api/firebase/categories", method = RequestMethod.GET)
+    public GenericResponse<List<Categories>> getTemp() throws ExecutionException, InterruptedException {
+        return categoryServiceFirestore.getCategories();
+    }
+
 }
