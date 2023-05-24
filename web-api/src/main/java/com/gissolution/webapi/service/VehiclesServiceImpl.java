@@ -3,6 +3,7 @@ package com.gissolution.webapi.service;
 import com.gissolution.webapi.input.VehicleAddRequest;
 import com.gissolution.webapi.output.Vehicles;
 import com.gissolution.webapi.output.generic.GenericResponse;
+import com.gissolution.webapi.serviceFireStore.VehiclesServiceFireStore;
 import com.gissolution.webdata.dao.VehiclesDao;
 import com.gissolution.webdata.entity.VehiclesEntity;
 import org.apache.http.entity.ContentType;
@@ -22,12 +23,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class VehiclesServiceImpl implements Serializable {
 
     @Autowired
     VehiclesDao vehiclesDao;
+
+    @Autowired
+    VehiclesServiceFireStore vehiclesServiceFireStore;
 
     @RequestMapping(value = "api/vehicles", produces = "application/json", method = RequestMethod.GET)
     @Transactional
@@ -72,7 +77,7 @@ public class VehiclesServiceImpl implements Serializable {
         Vehicles vehicles = new Vehicles();
         vehicles.setVehicleNumber(vehiclesEntity.getVehicleNumber());
         vehicles.setCapacity(vehiclesEntity.getCapacity());
-        vehicles.setVehicleId(vehiclesEntity.getVehicleId());
+        vehicles.setVehicleId(vehiclesEntity.getVehicleId().toString());
         vehicles.setName(vehiclesEntity.getName());
         vehicles.setDriverName(vehiclesEntity.getDriverName());
         vehicles.setDriverNumber(vehiclesEntity.getDriverNumber());
@@ -93,11 +98,26 @@ public class VehiclesServiceImpl implements Serializable {
             vehiclesEntity.setName(request.getName());
             vehiclesEntity = vehiclesDao.save(vehiclesEntity);
 
+            Vehicles vehicles = new Vehicles();
+            vehicles.setVehicleNumber(vehiclesEntity.getVehicleNumber());
+            vehicles.setCapacity(vehiclesEntity.getCapacity());
+            vehicles.setName(vehiclesEntity.getName());
+            vehicles.setDriverName(vehiclesEntity.getDriverName());
+            vehicles.setDriverNumber(vehiclesEntity.getDriverNumber());
+            vehicles.setVehicleId(vehiclesEntity.getVehicleId().toString());
+
+            vehiclesServiceFireStore.postVehicles(vehicles);
+
             return new ResponseEntity<>(new GenericResponse<>(getVehiclesResponse(vehiclesEntity)), HttpStatus.CREATED);
         } catch (Exception e){
             e.printStackTrace();
             genericResponse.setError(true);
             return new ResponseEntity<>(genericResponse, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(value = "api/firebase/vehicles", method = RequestMethod.GET)
+    public GenericResponse<List<Vehicles>> getFirebaseVehicles() throws ExecutionException, InterruptedException {
+        return vehiclesServiceFireStore.getVehicles();
     }
 }

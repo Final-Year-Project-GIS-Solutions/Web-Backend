@@ -8,7 +8,7 @@ import java.util.UUID;
 public class Vehicles implements Serializable {
 
     @JsonProperty("vehicleId")
-    UUID vehicleId;
+    String vehicleId;
 
     @JsonProperty("name")
     String name;
@@ -25,11 +25,11 @@ public class Vehicles implements Serializable {
     @JsonProperty("capacity")
     String capacity;
 
-    public UUID getVehicleId() {
+    public String getVehicleId() {
         return vehicleId;
     }
 
-    public void setVehicleId(UUID vehicleId) {
+    public void setVehicleId(String vehicleId) {
         this.vehicleId = vehicleId;
     }
 
