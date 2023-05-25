@@ -14,15 +14,25 @@ public class WarehouseEntity implements Serializable{
     @Column(name = "id", columnDefinition = "uuid")
     UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    AddressEntity addressEntity;
-
     @Column(name = "warehouse_title")
     String warehouseTitle;
 
-    @Column(name = "user_id")
-    String userId;
+    @Column(name = "address_plain_text")
+    String addressPlainText;
+
+    @Column(name = "latitude")
+    String latitude;
+
+    @Column(name = "longitude")
+    String longitude;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getWarehouseTitle() {
         return warehouseTitle;
@@ -32,28 +42,28 @@ public class WarehouseEntity implements Serializable{
         this.warehouseTitle = warehouseTitle;
     }
 
-    public AddressEntity getAddressEntity() {
-        return addressEntity;
+    public String getAddressPlainText() {
+        return addressPlainText;
     }
 
-    public void setAddressEntity(AddressEntity addressEntity) {
-        this.addressEntity = addressEntity;
+    public void setAddressPlainText(String addressPlainText) {
+        this.addressPlainText = addressPlainText;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public UUID getId() {
-        return id;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setId(UUID warehouseId) {
-        this.id = warehouseId;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     @Override
