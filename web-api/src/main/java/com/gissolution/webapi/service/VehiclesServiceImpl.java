@@ -34,38 +34,38 @@ public class VehiclesServiceImpl implements Serializable {
     @Autowired
     VehiclesServiceFireStore vehiclesServiceFireStore;
 
-    @RequestMapping(value = "api/vehicles", produces = "application/json", method = RequestMethod.GET)
-    @Transactional
-    public @ResponseBody ResponseEntity<GenericResponse<List<Vehicles>>> getVehicles(@RequestParam(name = "start", required = false)Integer start, @RequestParam(name = "upto", required = false) Integer upto) throws IOException {
-        GenericResponse<List<Vehicles>> genericResponse = new GenericResponse<>();
-        try {
-            if (start == null) {
-                start = 0;
-            }
-            if (upto == null) {
-                upto = 15;
-            }
-            Pageable pageable = PageRequest.of(start, upto, Sort.by("id"));
-            Page<VehiclesEntity> vehiclesEntities = vehiclesDao.getVehicles(pageable);
-            boolean hasMorePages = true;
-            if (vehiclesEntities.getTotalPages() > start) {
-                hasMorePages = false;
-            }
-            List<Vehicles> vehiclesList = new ArrayList<>();
-            for (VehiclesEntity vehiclesEntity : vehiclesEntities.getContent()) {
-                vehiclesList.add(getVehiclesResponse(vehiclesEntity));
-            }
-
-            genericResponse.setError(false);
-            genericResponse.setHasMorePage(hasMorePages);
-            genericResponse.setResponse(vehiclesList);
-            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            genericResponse.setError(true);
-            genericResponse.setErrorMessage("Bad Input");
-            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @RequestMapping(value = "api/vehicles", produces = "application/json", method = RequestMethod.GET)
+//    @Transactional
+//    public @ResponseBody ResponseEntity<GenericResponse<List<Vehicles>>> getVehicles(@RequestParam(name = "start", required = false)Integer start, @RequestParam(name = "upto", required = false) Integer upto) throws IOException {
+//        GenericResponse<List<Vehicles>> genericResponse = new GenericResponse<>();
+//        try {
+//            if (start == null) {
+//                start = 0;
+//            }
+//            if (upto == null) {
+//                upto = 15;
+//            }
+//            Pageable pageable = PageRequest.of(start, upto, Sort.by("id"));
+//            Page<VehiclesEntity> vehiclesEntities = vehiclesDao.getVehicles(pageable);
+//            boolean hasMorePages = true;
+//            if (vehiclesEntities.getTotalPages() > start) {
+//                hasMorePages = false;
+//            }
+//            List<Vehicles> vehiclesList = new ArrayList<>();
+//            for (VehiclesEntity vehiclesEntity : vehiclesEntities.getContent()) {
+//                vehiclesList.add(getVehiclesResponse(vehiclesEntity));
+//            }
+//
+//            genericResponse.setError(false);
+//            genericResponse.setHasMorePage(hasMorePages);
+//            genericResponse.setResponse(vehiclesList);
+//            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.ACCEPTED);
+//        } catch (Exception e) {
+//            genericResponse.setError(true);
+//            genericResponse.setErrorMessage("Bad Input");
+//            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     MultiValueMap<String, String> getHeaders(){
         MultiValueMap<String, String> map = new HttpHeaders();
@@ -84,7 +84,7 @@ public class VehiclesServiceImpl implements Serializable {
         return vehicles;
     }
 
-    @RequestMapping(value = "api/vehicles", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "api/firebase/vehicles", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @Transactional
     public @ResponseBody ResponseEntity<GenericResponse<?>> addVehicles(@RequestBody VehicleAddRequest request) {
         GenericResponse<String> genericResponse = new GenericResponse<>();

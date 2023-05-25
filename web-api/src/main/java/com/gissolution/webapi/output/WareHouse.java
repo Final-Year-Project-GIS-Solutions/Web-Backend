@@ -7,46 +7,57 @@ import java.util.UUID;
 
 public class WareHouse implements Serializable {
     @JsonProperty("warehouseId")
-    UUID id;
+    String id;
 
-    @JsonProperty("addressId")
-    UUID addressId;
+    @JsonProperty("address")
+    String addressPlainText;
 
     @JsonProperty("warehouseTitle")
-    String wareHouseTitle;
+    String warehouseTitle;
 
-    @JsonProperty("userId")
-    String userId;
+    @JsonProperty("latitude")
+    String latitude;
 
-    public String getUserId() {
-        return userId;
-    }
+    @JsonProperty("longitude")
+    String longitude;
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public UUID getAddressId() {
-        return addressId;
+    public String getAddressPlainText() {
+        return addressPlainText;
     }
 
-    public void setAddressId(UUID addressId) {
-        this.addressId = addressId;
+    public void setAddressPlainText(String addressPlainText) {
+        this.addressPlainText = addressPlainText;
     }
 
-    public String getWareHouseTitle() {
-        return wareHouseTitle;
+    public String getWarehouseTitle() {
+        return warehouseTitle;
     }
 
-    public void setWareHouseTitle(String wareHouseTitle) {
-        this.wareHouseTitle = wareHouseTitle;
+    public void setWarehouseTitle(String warehouseTitle) {
+        this.warehouseTitle = warehouseTitle;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 }

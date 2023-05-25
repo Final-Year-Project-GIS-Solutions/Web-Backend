@@ -3,23 +3,34 @@ package com.gissolution.webapi.output;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 public class ProductDemo implements Serializable {
 
     @JsonProperty("productId")
     String productId;
 
-    @JsonProperty("name")
-    String name;
+    @JsonProperty("title")
+    String title;
+
+    @JsonProperty("description")
+    String description;
+
+    @JsonProperty("images")
+    List<String> images;
 
     @JsonProperty("price")
     String price;
 
-    @JsonProperty("totalQuantity")
-    String totalQuantity;
+    @JsonProperty("sizes")
+    List<String> sizes;
 
-    @JsonProperty("brandName")
-    String brandName;
+    @JsonProperty("colors")
+    List<String> colors;
+
+    @JsonProperty("quantity")
+    String quantity;
 
     public String getProductId() {
         return productId;
@@ -29,12 +40,28 @@ public class ProductDemo implements Serializable {
         this.productId = productId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
     public String getPrice() {
@@ -45,19 +72,27 @@ public class ProductDemo implements Serializable {
         this.price = price;
     }
 
-    public String getTotalQuantity() {
-        return totalQuantity;
+    public List<String> getSizes() {
+        return sizes;
     }
 
-    public void setTotalQuantity(String totalQuantity) {
-        this.totalQuantity = totalQuantity;
+    public void setSizes(List<String> sizes) {
+        this.sizes = sizes;
     }
 
-    public String getBrandName() {
-        return brandName;
+    public List<String> getColors() {
+        return colors;
     }
 
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
+    public void setColors(List<String> colors) {
+        this.colors = colors;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

@@ -1,5 +1,7 @@
 package com.gissolution.webapi.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.gissolution.webapi.input.ProductDemoAddRequest;
 import com.gissolution.webapi.output.ProductDemo;
 import com.gissolution.webapi.output.generic.GenericResponse;
@@ -8,16 +10,16 @@ import com.gissolution.webdata.dao.ProductDemoDao;
 import com.gissolution.webdata.entity.ProductsDemoEntity;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,38 +36,48 @@ public class ProductsDemoServiceImpl implements Serializable {
     @Autowired
     ProductsServiceFireStore productsServiceFireStore;
 
-    @RequestMapping(value = "api/firebase/products", produces = "application/json", method = RequestMethod.GET)
-    @Transactional
-    public @ResponseBody ResponseEntity<GenericResponse<List<ProductDemo>>> getProducts(@RequestParam(name = "start", required = false)Integer start, @RequestParam(name = "upto", required = false) Integer upto) throws IOException {
-        GenericResponse<List<ProductDemo>> genericResponse = new GenericResponse<>();
-        try {
-            if (start == null) {
-                start = 0;
-            }
-            if (upto == null) {
-                upto = 15;
-            }
-            Pageable pageable = PageRequest.of(start, upto, Sort.by("id"));
-            Page<ProductsDemoEntity> productsDemoEntities = productDemoDao.getProducts(pageable);
-            boolean hasMorePAges = true;
-            if (productsDemoEntities.getTotalPages()>start) {
-                hasMorePAges = false;
-            }
-            List<ProductDemo> productDemoResponseList = new ArrayList<>();
-            for (ProductsDemoEntity productsDemoEntity :productsDemoEntities.getContent()) {
-                productDemoResponseList.add(getProductDemoResponse(productsDemoEntity));
-            }
+    private final RestTemplate restTemplate;
 
-            genericResponse.setResponse(productDemoResponseList);
-            genericResponse.setError(false);
-            genericResponse.setHasMorePage(hasMorePAges);
-            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            genericResponse.setError(true);
-            genericResponse.setErrorMessage("Bad Input");
-            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.BAD_REQUEST);
-        }
+    public ProductsDemoServiceImpl(RestTemplateBuilder restTemplate) {
+        this.restTemplate = restTemplate.build();
     }
+
+//    @RequestMapping(value = "api/products", produces = "application/json", method = RequestMethod.GET)
+//    @Transactional
+//    public @ResponseBody ResponseEntity<GenericResponse<List<ProductDemo>>> getProducts(@RequestParam(name = "start", required = false)Integer start, @RequestParam(name = "upto", required = false) Integer upto) throws IOException {
+//        GenericResponse<List<ProductDemo>> genericResponse = new GenericResponse<>();
+//        try {
+//            if (start == null) {
+//                start = 0;
+//            }
+//            if (upto == null) {
+//                upto = 15;
+//            }
+//            Pageable pageable = PageRequest.of(start, upto, Sort.by("id"));
+//            Page<ProductsDemoEntity> productsDemoEntities = productDemoDao.getProducts(pageable);
+//            boolean hasMorePAges = false;
+//            if (productsDemoEntities.getTotalPages()>start) {
+//                hasMorePAges = true;
+//            }
+//            List<ProductDemo> productDemoResponseList = new ArrayList<>();
+//            for (ProductsDemoEntity productsDemoEntity :productsDemoEntities.getContent()) {
+//                productDemoResponseList.add(getProductDemoResponse(productsDemoEntity));
+//            }
+//
+////            String url = "http://localhost:5000/gisSolution/textToLatLong?text=International Institute of Information Technology, Pune";
+////            JsonNode latLong =  this.restTemplate.getForObject(url, JsonNode.class);
+////            ArrayNode arrayList = (ArrayNode) latLong.get("location");
+//
+//            genericResponse.setResponse(productDemoResponseList);
+//            genericResponse.setError(false);
+//            genericResponse.setHasMorePage(hasMorePAges);
+//            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.ACCEPTED);
+//        } catch (Exception e) {
+//            genericResponse.setError(true);
+//            genericResponse.setErrorMessage("Bad Input");
+//            return new ResponseEntity<>(genericResponse, getHeaders(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
     MultiValueMap<String, String> getHeaders(){
         MultiValueMap<String, String> map = new HttpHeaders();
         map.set(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType());
@@ -74,11 +86,14 @@ public class ProductsDemoServiceImpl implements Serializable {
 
     private ProductDemo getProductDemoResponse(ProductsDemoEntity productsDemoEntity) {
         ProductDemo productDemo = new ProductDemo();
-        productDemo.setName(productsDemoEntity.getName());
-        productDemo.setPrice(productsDemoEntity.getPrice());
-        productDemo.setBrandName(productsDemoEntity.getBrandName());
         productDemo.setProductId(productsDemoEntity.getId().toString());
-        productDemo.setTotalQuantity(productsDemoEntity.getTotalQuantity());
+        productDemo.setTitle(productsDemoEntity.getTitle());
+        productDemo.setDescription(productsDemoEntity.getDescription());
+        productDemo.setSizes(productsDemoEntity.getImages());
+        productDemo.setPrice(productsDemoEntity.getPrice());
+        productDemo.setSizes(productsDemoEntity.getSizes());
+        productDemo.setColors(productsDemoEntity.getColors());
+        productDemo.setQuantity(productsDemoEntity.getQuantity());
         return productDemo;
     }
 
@@ -89,17 +104,23 @@ public class ProductsDemoServiceImpl implements Serializable {
         genericResponse.setResponse("Some Error Occured. Check your input");
         try {
             ProductsDemoEntity productsDemoEntity = new ProductsDemoEntity();
-            productsDemoEntity.setBrandName(request.getBrandName());
-            productsDemoEntity.setTotalQuantity(request.getTotalQuantity());
-            productsDemoEntity.setName(request.getName());
+            productsDemoEntity.setColors(request.getColors());
             productsDemoEntity.setPrice(request.getPrice());
+            productsDemoEntity.setImages(request.getImages());
+            productsDemoEntity.setDescription(request.getDescription());
+            productsDemoEntity.setQuantity(request.getQuantity());
+            productsDemoEntity.setPrice(request.getPrice());
+            productsDemoEntity.setTitle(request.getTitle());
             productsDemoEntity = productDemoDao.save(productsDemoEntity);
 
             ProductDemo productDemo = new ProductDemo();
-            productDemo.setTotalQuantity(productsDemoEntity.getTotalQuantity());
-            productDemo.setName(productsDemoEntity.getName());
+            productDemo.setQuantity(productsDemoEntity.getQuantity());
+            productDemo.setColors(productsDemoEntity.getColors());
+            productDemo.setSizes(productsDemoEntity.getSizes());
             productDemo.setPrice(productsDemoEntity.getPrice());
-            productDemo.setBrandName(productsDemoEntity.getBrandName());
+            productDemo.setImages(productsDemoEntity.getImages());
+            productDemo.setDescription(productsDemoEntity.getDescription());
+            productDemo.setTitle(productsDemoEntity.getTitle());
             productDemo.setProductId(productsDemoEntity.getId().toString());
 
             productsServiceFireStore.postProducts(productDemo);
