@@ -85,8 +85,6 @@ public class VehiclesServiceImpl implements Serializable {
         return vehicles;
     }
 
-    @CrossOrigin(origins = "http://localhost:8070")
-
     @RequestMapping(value = "api/firebase/vehicles", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @Transactional
     public @ResponseBody ResponseEntity<GenericResponse<?>> addVehicles(@RequestBody VehicleAddRequest request) {
