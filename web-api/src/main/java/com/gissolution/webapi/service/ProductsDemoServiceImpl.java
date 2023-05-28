@@ -111,6 +111,7 @@ public class ProductsDemoServiceImpl implements Serializable {
             productsDemoEntity.setQuantity(request.getQuantity());
             productsDemoEntity.setPrice(request.getPrice());
             productsDemoEntity.setTitle(request.getTitle());
+            productsDemoEntity.setSizes(request.getSizes());
             productsDemoEntity = productDemoDao.save(productsDemoEntity);
 
             ProductDemo productDemo = new ProductDemo();
